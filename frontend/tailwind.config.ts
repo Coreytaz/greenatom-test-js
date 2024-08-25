@@ -1,14 +1,15 @@
-import type { Config } from "tailwindcss"
-import { fontFamily } from "tailwindcss/defaultTheme"
+import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
+import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -78,7 +79,24 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config
+  plugins: [
+    require("tailwindcss-animate"),
+    plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          "auto-fill": (value) => ({
+            gridTemplateColumns: `repeat(auto-fill, minmax(min(${value}, 100%), 1fr))`,
+          }),
+          "auto-fit": (value) => ({
+            gridTemplateColumns: `repeat(auto-fit, minmax(min(${value}, 100%), 1fr))`,
+          }),
+        },
+        {
+          values: theme("width", {}),
+        }
+      );
+    }),
+  ],
+} satisfies Config;
 
-export default config
+export default config;

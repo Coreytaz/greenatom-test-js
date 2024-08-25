@@ -1,0 +1,1 @@
+export { CardPhoto } from "./CardPhoto";
