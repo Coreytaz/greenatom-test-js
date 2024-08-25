@@ -7,7 +7,7 @@ export class ModalPhotoStore {
   private _isOpen: boolean = false;
   private _albums: any[] = [];
   private _index: number | undefined = undefined;
-  private _currentPhotoId: number | undefined = undefined;
+  private _currentPhotoId: number | string | undefined = undefined;
 
   constructor() {
     makeAutoObservable<this>(this, undefined, {
@@ -16,7 +16,7 @@ export class ModalPhotoStore {
   }
 
   get maxLengthAlbums() {
-    return this._albums.length - 1;
+    return this._albums?.length - 1;
   }
 
   get index() {
@@ -32,7 +32,7 @@ export class ModalPhotoStore {
   }
 
   get currentPhotoInfo() {
-    return this._albums.at(this._index);
+    return this._albums?.at(this._index) ?? {};
   }
 
   get albums() {
@@ -51,7 +51,7 @@ export class ModalPhotoStore {
     this._isOpen = value;
   }
 
-  setCurrentPhoto(value: number, index: number) {
+  setCurrentPhoto(value: number | string, index: number) {
     this._index = index;
     this._currentPhotoId = value;
   }
