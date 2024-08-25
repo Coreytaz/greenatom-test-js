@@ -22,7 +22,5 @@ services:
       context: ./frontend
     ports:
       - '3000:3000'
-    environment:
-      API_URL: "localhost:8055"
     depends_on:
       - directus
