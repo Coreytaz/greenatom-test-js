@@ -32,6 +32,7 @@ export const CardPhoto: FC<CardPhotoProps> = ({
             className="flex-grow h-60 w-auto object-cover transition-all hover:scale-105"
             src={img}
             alt={title}
+            quality={50}
           />
         </div>
       </CardHeader>

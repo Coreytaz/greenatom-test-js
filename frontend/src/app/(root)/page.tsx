@@ -71,7 +71,7 @@ export default function Home() {
             <Link
               key={album.id}
               style={{ display: "contents" }}
-              href={`/album/${album.id}`}
+              href={`/album/${album.id}/1`}
             >
               <CardPhoto
                 img={album.preview}

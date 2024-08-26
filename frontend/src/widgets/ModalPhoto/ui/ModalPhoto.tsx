@@ -20,9 +20,9 @@ interface ModalPhotoProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const ModalPhoto: FC<ModalPhotoProps> = observer(
   ({ className, ...props }) => {
-    const page = "/album/";
+    const pageSlug = "/album/";
     const params = useParams<{ id: string[] }>();
-    const [albumId, photoId] = params.id;
+    const [albumId, page] = params.id;
     const router = useRouter();
     const {
       isOpen,
@@ -44,7 +44,7 @@ export const ModalPhoto: FC<ModalPhotoProps> = observer(
         index = 0;
       }
       const album = albums.at(index);
-      window.history.pushState(null, "", `${page}${albumId}/${album.id}`);
+      window.history.pushState(null, "", `${pageSlug}${albumId}/${page}/${album.id}`);
     };
 
     useEffect(() => {
@@ -66,7 +66,7 @@ export const ModalPhoto: FC<ModalPhotoProps> = observer(
         open={isOpen}
         onOpenChange={(value) => {
           if (!value) {
-            window.history.pushState(null, "", `${page}${albumId}`);
+            window.history.pushState(null, "", `${pageSlug}${albumId}/${page}`);
           }
           onToggle(value);
         }}
@@ -79,6 +79,7 @@ export const ModalPhoto: FC<ModalPhotoProps> = observer(
           <div className="flex justify-center">
             <Image
               className="max-h-[calc(100svh-150px)] w-auto object-cover rounded-lg pointer-events-none"
+              quality={100}
               alt={currentPhotoInfo.title}
               src={currentPhotoInfo.id}
             />

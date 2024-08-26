@@ -4,7 +4,15 @@ import { useState, useEffect } from "react";
 import { ModalPhoto, ModalPhotoProvider } from "@/widgets/ModalPhoto";
 import { Gallery } from "@/widgets/gallery";
 import { http } from "@/shared/api";
-import { Loading } from "@/shared/ui";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
+  Loading,
+} from "@/shared/ui";
+import { PaginationBlock, PaginationProvider } from "@/entities/Pagination";
 
 function useFetchAlbum(url1: string, url2: string) {
   const [data, setData] = useState(null);
@@ -47,7 +55,9 @@ function useFetchAlbum(url1: string, url2: string) {
 export default function AlbumPage({ params }: { params: { id: string[] } }) {
   const [data, isLoading, error] = useFetchAlbum(
     `http://localhost:8055/items/albums/${params.id.at(0)}`,
-    `http://localhost:8055/files?limit=25&fields[]=id&fields[]=title&sort[]=-uploaded_on&filter[_and][0][_and][0][$FOLLOW(albums_files,directus_files_id)][albums_id][_eq]=${params.id.at(
+    `http://localhost:8055/files?limit=6&page=${params.id.at(
+      1
+    )}&fields[]=id&fields[]=title&sort[]=-uploaded_on&filter[_and][0][_and][0][$FOLLOW(albums_files,directus_files_id)][albums_id][_eq]=${params.id.at(
       0
     )}&filter[_and][1][_and][0][type][_nnull]=true&filter[_and][1][_and][1][folder][_eq]=39a3c5ae-1c9a-4c6d-881a-1819b5404e3c`
   );
@@ -72,9 +82,15 @@ export default function AlbumPage({ params }: { params: { id: string[] } }) {
 
   return (
     <ModalPhotoProvider>
-      <h2 className="text-xl font-semibold">{data.title}</h2>
-      <Gallery albums={data.photos} />
-      <ModalPhoto />
+      <PaginationProvider>
+        <h2 className="text-xl font-semibold">{data.title}</h2>
+        <Gallery albums={data.photos} />
+        <PaginationBlock
+          disabledNext={data.photos.length < 6}
+          disabledPrev={+params.id.at(1) === 1}
+        />
+        <ModalPhoto />
+      </PaginationProvider>
     </ModalPhotoProvider>
   );
 }

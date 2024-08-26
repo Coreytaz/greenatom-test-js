@@ -12,9 +12,8 @@ interface GalleryProps {
 
 export const Gallery: FC<GalleryProps> = observer(({ albums }) => {
   const params = useParams<{ id: string[] }>();
-  const page = "/album/";
-  const router = useRouter();
-  const [albumId, photoId] = params.id;
+  const pageSlug = "/album/";
+  const [albumId, page, photoId] = params.id;
   const { onOpen, setAlbums, setCurrentPhoto } = useModalPhoto();
 
   useEffect(() => {
@@ -26,7 +25,7 @@ export const Gallery: FC<GalleryProps> = observer(({ albums }) => {
         setCurrentPhoto(_photoId, index);
         onOpen();
       } else {
-        window.history.replaceState(null, "", `${page}${albumId}`);
+        window.history.replaceState(null, "", `${pageSlug}${albumId}/${page}`);
       }
     }
   }, []);
@@ -45,7 +44,7 @@ export const Gallery: FC<GalleryProps> = observer(({ albums }) => {
                 window.history.pushState(
                   null,
                   "",
-                  `${page}${albumId}/${album.id}`
+                  `${pageSlug}${albumId}/${page}/${album.id}`
                 );
                 setCurrentPhoto(album.id, index);
                 onOpen();
